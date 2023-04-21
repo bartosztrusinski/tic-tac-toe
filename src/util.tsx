@@ -1,9 +1,5 @@
 import { PlayerValue, SquareValue } from './interface';
 
-const mainColor = 'pink-500';
-const firstPlayerColor = 'purple-600';
-const secondPlayerColor = 'orange-400';
-
 const winCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -18,6 +14,16 @@ const winCombinations = [
 const firstPlayerValue = 'X';
 const secondPlayerValue = 'O';
 
+const mainColor = 'pink-500';
+const firstPlayerColor = 'purple-600';
+const secondPlayerColor = 'orange-400';
+
+const colors = {
+  main: mainColor,
+  [firstPlayerValue]: firstPlayerColor,
+  [secondPlayerValue]: secondPlayerColor,
+} as const;
+
 const getOpponentValue = (playerValue: PlayerValue) => {
   return playerValue === firstPlayerValue
     ? secondPlayerValue
@@ -30,13 +36,26 @@ const getCurrentMoveIndex = (squareValues: SquareValue[]) =>
     0
   ) - 1;
 
+const initSquareValues: () => SquareValue[] = () => Array(9).fill(null);
+
+const getWinner = (
+  squareValues: SquareValue[],
+  lastMovePlayerValue: PlayerValue
+) => {
+  const isWinner = winCombinations.some((combination) =>
+    combination.every((index) => squareValues[index] === lastMovePlayerValue)
+  );
+
+  return isWinner ? lastMovePlayerValue : null;
+};
+
 export {
-  getOpponentValue,
-  getCurrentMoveIndex,
+  winCombinations,
   firstPlayerValue,
   secondPlayerValue,
-  winCombinations,
-  mainColor,
-  firstPlayerColor,
-  secondPlayerColor,
+  colors,
+  getOpponentValue,
+  getCurrentMoveIndex,
+  initSquareValues,
+  getWinner,
 };
