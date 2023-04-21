@@ -1,5 +1,5 @@
 import { SquareValue } from './interface';
-import { firstPlayerValue } from './util';
+import { colors } from './util';
 
 interface SquareProps {
   value: SquareValue;
@@ -7,17 +7,15 @@ interface SquareProps {
 }
 
 const Square = ({ value, onClick }: SquareProps) => {
-  const isAlreadyClicked = value !== null;
-  const squareColors =
-    value === firstPlayerValue
-      ? 'text-purple-600 border-purple-600'
-      : 'text-orange-400 border-orange-400';
+  const clickedSquareClasses =
+    value !== null
+      ? `text-${colors[value]} border-${colors[value]} cursor-not-allowed`
+      : '';
 
   return (
     <button
-      className={`flex  select-none place-content-center place-items-center rounded
-      border-2 bg-neutral-800 text-center font-cursive text-5xl font-bold md:text-6xl
-       ${isAlreadyClicked && `${squareColors} cursor-not-allowed`}`}
+      className={`flex select-none place-content-center place-items-center rounded
+      border-4 bg-neutral-800 text-5xl font-bold md:text-6xl ${clickedSquareClasses}`}
       onClick={onClick}>
       {value}
     </button>
