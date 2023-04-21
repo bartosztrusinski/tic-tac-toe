@@ -10,5 +10,6 @@
   #root {
     @apply h-full;
     @apply font-cursive;
+    @apply bg-neutral-900;
   }
 }
