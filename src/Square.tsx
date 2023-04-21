@@ -1,5 +1,5 @@
 import { SquareValue } from './interface';
-import { colors } from './util';
+import { playerColors } from './util';
 
 interface SquareProps {
   value: SquareValue;
@@ -7,16 +7,18 @@ interface SquareProps {
 }
 
 const Square = ({ value, onClick }: SquareProps) => {
-  const clickedSquareClasses =
+  const colorClasses =
     value !== null
-      ? `text-${colors[value]} border-${colors[value]} cursor-not-allowed`
+      ? `text-${playerColors[value]} border-${playerColors[value]} cursor-not-allowed`
       : '';
 
   return (
     <button
       className={`flex select-none place-content-center place-items-center rounded
-      border-4 bg-neutral-800 text-5xl font-bold md:text-6xl ${clickedSquareClasses}`}
-      onClick={onClick}>
+        border-4 bg-neutral-800 text-5xl font-bold focus-visible:border-accent
+        focus-visible:outline-none md:text-6xl ${colorClasses}`}
+      onClick={onClick}
+      disabled={value !== null}>
       {value}
     </button>
   );
