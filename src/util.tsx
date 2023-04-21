@@ -14,12 +14,10 @@ const winCombinations = [
 const firstPlayerValue = 'X';
 const secondPlayerValue = 'O';
 
-const mainColor = 'pink-500';
-const firstPlayerColor = 'purple-600';
-const secondPlayerColor = 'orange-400';
+const firstPlayerColor = 'player-one';
+const secondPlayerColor = 'player-two';
 
-const colors = {
-  main: mainColor,
+const playerColors = {
   [firstPlayerValue]: firstPlayerColor,
   [secondPlayerValue]: secondPlayerColor,
 } as const;
@@ -53,7 +51,7 @@ export {
   winCombinations,
   firstPlayerValue,
   secondPlayerValue,
-  colors,
+  playerColors,
   getOpponentValue,
   getCurrentMoveIndex,
   initSquareValues,
