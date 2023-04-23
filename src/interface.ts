@@ -4,9 +4,6 @@ type PlayerValue = typeof firstPlayerValue | typeof secondPlayerValue;
 
 type SquareValue = PlayerValue | null;
 
-type PlayerMove = {
-  value: PlayerValue;
-  squareIndex: number;
-};
+type MoveIndex = number;
 
-export type { PlayerValue, PlayerMove, SquareValue };
+export type { PlayerValue, MoveIndex, SquareValue };

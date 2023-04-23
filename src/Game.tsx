@@ -1,13 +1,14 @@
 import Board from './Board';
 import MoveList from './MoveList';
-import { PlayerMove, PlayerValue, SquareValue } from './interface';
+import { MoveIndex, SquareValue } from './interface';
 import {
-  firstPlayerValue,
-  getCurrentMoveIndex,
-  getOpponentValue,
   playerColors,
-  initSquareValues,
+  getMoveCount,
+  getOpponentValue,
   getWinner,
+  getPlayerValue,
+  initSquareValues,
+  isBoardFull,
 } from './util';
 import { useState } from 'react';
 
@@ -15,14 +16,16 @@ const Game = () => {
   const [squareValues, setSquareValues] = useState<SquareValue[]>(
     initSquareValues()
   );
-  const [currentPlayerValue, setCurrentPlayerValue] =
-    useState<PlayerValue>(firstPlayerValue);
-  const [playerMoves, setPlayerMoves] = useState<PlayerMove[]>([]);
+  const [playerMoves, setPlayerMoves] = useState<MoveIndex[]>([]);
 
+  const currentMoveIndex = getMoveCount(squareValues);
+  const currentPlayerValue = getPlayerValue(currentMoveIndex);
+  const lastMoveIndex = currentMoveIndex - 1;
   const lastMovePlayerValue = getOpponentValue(currentPlayerValue);
-  const currentMoveIndex = getCurrentMoveIndex(squareValues);
+
   const winner = getWinner(squareValues, lastMovePlayerValue);
-  const isGameOver = winner || squareValues.every((value) => value !== null);
+  const isGameOver = winner || isBoardFull(squareValues);
+
   const currentTextColor = winner
     ? `text-${playerColors[winner]}`
     : 'text-main';
@@ -36,32 +39,26 @@ const Game = () => {
       return newSquareValues;
     });
 
-    setCurrentPlayerValue((prevCurrentPlayerValue) =>
-      getOpponentValue(prevCurrentPlayerValue)
-    );
-
     setPlayerMoves((prevMoves) => [
-      ...prevMoves.slice(0, currentMoveIndex + 1),
-      { value: currentPlayerValue, squareIndex: clickedSquareIndex },
+      ...prevMoves.slice(0, currentMoveIndex),
+      clickedSquareIndex,
     ]);
   };
 
   const handleMoveClick = (moveIndex: number) => {
-    if (moveIndex === currentMoveIndex) return;
+    if (moveIndex === lastMoveIndex) return;
 
     const newSquares = initSquareValues();
 
-    playerMoves.slice(0, moveIndex + 1).forEach((move) => {
-      newSquares[move.squareIndex] = move.value;
+    playerMoves.slice(0, moveIndex + 1).forEach((squareIndex, moveIndex) => {
+      newSquares[squareIndex] = getPlayerValue(moveIndex);
     });
 
     setSquareValues(newSquares);
-    setCurrentPlayerValue(getOpponentValue(playerMoves[moveIndex].value));
   };
 
   const resetGame = () => {
     setSquareValues(initSquareValues());
-    setCurrentPlayerValue(firstPlayerValue);
     setPlayerMoves([]);
   };
 
@@ -114,8 +111,8 @@ const Game = () => {
           <h2 className='text-center text-xl text-main sm:text-start'>Moves</h2>
           <MoveList
             moves={playerMoves}
-            currentMoveIndex={currentMoveIndex}
-            onClick={handleMoveClick}
+            lastMoveIndex={lastMoveIndex}
+            moveTo={handleMoveClick}
           />
         </section>
       </main>

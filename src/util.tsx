@@ -11,31 +11,6 @@ const winCombinations = [
   [2, 4, 6],
 ];
 
-const firstPlayerValue = 'X';
-const secondPlayerValue = 'O';
-
-const firstPlayerColor = 'player-one';
-const secondPlayerColor = 'player-two';
-
-const playerColors = {
-  [firstPlayerValue]: firstPlayerColor,
-  [secondPlayerValue]: secondPlayerColor,
-} as const;
-
-const getOpponentValue = (playerValue: PlayerValue) => {
-  return playerValue === firstPlayerValue
-    ? secondPlayerValue
-    : firstPlayerValue;
-};
-
-const getCurrentMoveIndex = (squareValues: SquareValue[]) =>
-  squareValues.reduce(
-    (clickedSquares, value) => (value ? clickedSquares + 1 : clickedSquares),
-    0
-  ) - 1;
-
-const initSquareValues: () => SquareValue[] = () => Array(9).fill(null);
-
 const getWinner = (
   squareValues: SquareValue[],
   lastMovePlayerValue: PlayerValue
@@ -47,13 +22,42 @@ const getWinner = (
   return isWinner ? lastMovePlayerValue : null;
 };
 
+const firstPlayerValue = 'X';
+const secondPlayerValue = 'O';
+
+const firstPlayerColor = 'player-one';
+const secondPlayerColor = 'player-two';
+
+const playerColors = {
+  [firstPlayerValue]: firstPlayerColor,
+  [secondPlayerValue]: secondPlayerColor,
+} as const;
+
+const getOpponentValue = (playerValue: PlayerValue) =>
+  playerValue === firstPlayerValue ? secondPlayerValue : firstPlayerValue;
+
+const getMoveCount = (squareValues: SquareValue[]) =>
+  squareValues.reduce(
+    (clickedSquares, value) => (value ? clickedSquares + 1 : clickedSquares),
+    0
+  );
+
+const initSquareValues = (): SquareValue[] => Array(9).fill(null);
+
+const getPlayerValue = (moveIndex: number): PlayerValue =>
+  moveIndex % 2 === 0 ? firstPlayerValue : secondPlayerValue;
+
+const isBoardFull = (squareValues: SquareValue[]) =>
+  squareValues.every((value) => value !== null);
+
 export {
-  winCombinations,
   firstPlayerValue,
   secondPlayerValue,
   playerColors,
   getOpponentValue,
-  getCurrentMoveIndex,
+  getMoveCount,
   initSquareValues,
   getWinner,
+  getPlayerValue,
+  isBoardFull,
 };
